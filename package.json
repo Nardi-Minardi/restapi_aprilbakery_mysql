@@ -1,0 +1,26 @@
+{
+  "name": "restapi_aprilbakery_mysql",
+  "version": "1.0.0",
+  "description": "rest api dengan mysql",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Nardi-Minardi/restapi_aprilbakery_mysql.git"
+  },
+  "keywords": [
+    "rest",
+    "api",
+    "node",
+    "js",
+    "mysql"
+  ],
+  "author": "nardi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Nardi-Minardi/restapi_aprilbakery_mysql/issues"
+  },
+  "homepage": "https://github.com/Nardi-Minardi/restapi_aprilbakery_mysql#readme"
+}
