@@ -8,12 +8,15 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({
     extended: true,
 }))
-
+app.use(bodyParser.json())
 
 app.use('/', (req, res) => {
-    res.json({ message: "REST API APRIL BAKERY MYSQL" })
+    res.json({ message: 'REST API APRIL BAKERY MYSQL' })
 })
 app.listen(process.env.PORT, (req, res) => {
     console.log(`Server is runing in ${process.env.PORT}`)
 })
+
+//routes
+app.use('/v1', require('./routes/usersRoute'))
 
