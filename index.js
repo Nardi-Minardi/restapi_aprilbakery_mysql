@@ -3,17 +3,6 @@ require('dotenv').config();
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
-// const database = require('./manager/database');
-
-// //connection db
-// const conn = new database({
-//     host: 'localhost',
-//     user: 'root',
-//     password: '',
-//     database: 'rest_api_aprilbakery'
-// })
-
-// global.db = conn
 
 
 //middleware express
