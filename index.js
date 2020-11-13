@@ -12,9 +12,9 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json())
 
 //routes
-app.use('/v1', require('./routes/usersRoute'))
+app.use('/api/v1', require('./routes/usersRoute'))
 
-app.use('/', (req, res) => {
+app.use('/api', (req, res) => {
     res.json({ message: 'REST API APRIL BAKERY MYSQL' })
 })
 app.listen(process.env.PORT, (req, res) => {

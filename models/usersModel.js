@@ -18,4 +18,20 @@ User.create = (newUser) => {
     })
 }
 
+User.findOne = (id, rows) => {
+    sql.query(`SELECT * FROM tb_users WHERE userId = ${id}`, (err, res) => {
+        if (err) {
+            console.log("error: ", err);
+            rows(err, null);
+            return;
+        }
+
+        if (res.length) {
+            console.log("found users: ", res[0]);
+            rows(null, res[0]);
+            return;
+        }
+    })
+}
+
 module.exports = User;

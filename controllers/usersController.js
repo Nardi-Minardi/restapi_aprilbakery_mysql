@@ -1,5 +1,7 @@
 const User = require('../models/usersModel');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const sql = require('../config/db');
 
 const usersController = {
     register: async (req, res) => {
@@ -31,7 +33,38 @@ const usersController = {
 
     login: async (req, res) => {
         try {
-            return res.status(200).json({ message: "helo dari controller" })
+            const email = req.body.email;
+            const password = req.body.password;
+
+            sql.query('SELECT * FROM tb_users WHERE email = ?', [email], async function (error, rows, fields) {
+                if (error) {
+                    return res.status(400).json({
+                        message: "inputan anda salah",
+                    })
+                } else {
+                    if (rows.length > 0) {
+                        const comparision = await bcrypt.compare(password, rows[0].password)
+                        const accesstoken = jwt.sign({ rows }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1d' })
+                        if (comparision) {
+                            return res.status(200).json({
+                                message: "login success",
+                                token: accesstoken
+                            })
+                        }
+                        else {
+                            return res.status(200).json({
+                                message: "password anda salah",
+                            })
+                        }
+                    }
+                    else {
+                        return res.status(200).json({
+                            message: "email tidak terdaftar",
+                        })
+                    }
+                }
+            });
+
         } catch (err) {
             return res.status(403).json({ message: err })
         }
@@ -68,6 +101,7 @@ const usersController = {
     },
 
 }
+
 
 module.exports = usersController
 

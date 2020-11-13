@@ -8,7 +8,7 @@ const registerValidation = () => [
 
     check('username').custom(value => {
         return new Promise((resolve, reject) => {
-            sql.query('SELECT id FROM tb_users WHERE username=?', [value], function (err, rows, fields) {
+            sql.query('SELECT userId FROM tb_users WHERE username=?', [value], function (err, rows, fields) {
                 if (err)
                     reject(err)
                 if (rows.length > 0)
@@ -20,7 +20,7 @@ const registerValidation = () => [
 
     check('email').custom(value => {
         return new Promise((resolve, reject) => {
-            sql.query('SELECT id FROM tb_users WHERE email=?', [value], function (err, rows, fields) {
+            sql.query('SELECT userId FROM tb_users WHERE email=?', [value], function (err, rows, fields) {
                 if (err)
                     reject(err)
                 if (rows.length > 0)
