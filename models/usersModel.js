@@ -15,7 +15,20 @@ User.create = (newUser) => {
             return;
         }
         console.log("Register Success", { id: res.insertId, ...newUser }); // ini response dari mysql
-    })
+    });
+}
+
+User.getAll = result => {
+    sql.query("SELECT * FROM tb_users", (err, res) => {
+        if (err) {
+            console.log("error: ", err);
+            result(null, err);
+            return;
+        }
+
+        console.log("Users: ", res);
+        result(null, res);
+    });
 }
 
 User.findOne = (id, rows) => {
@@ -31,7 +44,32 @@ User.findOne = (id, rows) => {
             rows(null, res[0]);
             return;
         }
-    })
+
+        result({ kind: "users not found" })
+    });
+}
+
+User.updateById = (id, user, result) => {
+    sql.query(
+        "UPDATE tb_users SET email = ?, username = ?, password = ? WHERE userId = ?",
+        [user.email, user.username, user.password, id],
+        (err, res) => {
+            if (err) {
+                console.log("error: ", err);
+                result(null, err);
+                return;
+            }
+
+            if (res.affectedRows == 0) {
+                // not found Customer with the id
+                result({ kind: "not_found" }, null);
+                return;
+            }
+
+            console.log("updated user: ", { id: id, ...user });
+            result(null, { id: id, ...user });
+        }
+    );
 }
 
 module.exports = User;

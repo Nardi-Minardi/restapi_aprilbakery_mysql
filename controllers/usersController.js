@@ -13,11 +13,11 @@ const usersController = {
             const hashPassword = await bcrypt.hash(password, 10)
 
             // create new objet user
-            const user = new User({
+            const user = {
                 username: req.body.username,
                 email: req.body.email,
                 password: hashPassword
-            })
+            }
 
             //save to database
             await User.create(user)
@@ -72,12 +72,14 @@ const usersController = {
 
     getUsers: async (req, res) => {
         try {
-            connection.query("SELECT * FROM tb_users", function (error, rows, fields) { //kirim 3 parameter
-                return res.status(200).json({
-                    message: "Success !",
-                    data: rows
-                })
-            })
+            User.getAll((err, rows) => {
+                if (err)
+                    res.status(400).send({
+                        message:
+                            err.message || "Some error occurred while retrieving customers."
+                    });
+                else res.status(200).json({ message: "success", data: rows })
+            });
 
         } catch (err) {
             return res.status(403).json({ message: err })
@@ -86,13 +88,20 @@ const usersController = {
 
     getUsersById: async (req, res) => {
         try {
-            const id = req.params.id;
-
-            connection.query("SELECT * FROM tb_users WHERE id = ?", [id], function (error, rows, fields) {
-                return res.status(200).json({
-                    message: "Success !",
-                    data: rows
-                })
+            User.findOne(req.params.id, (err, rows) => {
+                if (err) {
+                    if (err.kind === "not found") {
+                        res.status(403).json({
+                            message: `users not found with id ${req.params.id}`
+                        });
+                    } else {
+                        res.status(500).json({
+                            message: "error retrieving User with id" + req.params.id
+                        });
+                    }
+                } else {
+                    res.status(200).json({ message: "success", data: rows })
+                }
             })
 
         } catch (err) {
@@ -100,6 +109,44 @@ const usersController = {
         }
     },
 
+    updateUsers: async (req, res) => {
+        try {
+            if (!req.body) {
+                res.status(400).json({
+                    message: "Content can not be empty!"
+                });
+            }
+            const { password } = req.body;
+
+            const hashPassword = await bcrypt.hash(password, 10)
+
+            const user = {
+                username: req.body.username,
+                email: req.body.email,
+                password: hashPassword
+            }
+
+            User.updateById(req.params.id, user, (err, rows) => {
+                if (err) {
+                    if (err.kind === "not_found") {
+                        res.status(404).json({
+                            message: `Not found User with id ${req.params.id}.`
+                        });
+                    } else {
+                        res.status(400).json({
+                            message: "Error updating User with id " + req.params.id
+                        });
+                    }
+                } else
+                    (rows.length === 1) // kondisi agar data yang diupdate di menambah data baru
+                res.status(200).json({ message: "success", data: rows })
+            }
+            )
+
+        } catch (err) {
+            return res.status(403).json({ message: err })
+        }
+    }
 }
 
 

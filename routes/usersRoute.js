@@ -10,4 +10,6 @@ router.get('/users', usersController.getUsers)
 
 router.get('/users/:id', usersController.getUsersById)
 
+router.put('/users/:id', usersController.updateUsers)
+
 module.exports = router
