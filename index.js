@@ -13,6 +13,7 @@ app.use(bodyParser.json())
 
 //routes
 app.use('/api/v1', require('./routes/usersRoute'))
+app.use('/api/v1', require('./routes/productsRoute'))
 
 app.use('/api', (req, res) => {
     res.json({ message: 'REST API APRIL BAKERY MYSQL' })

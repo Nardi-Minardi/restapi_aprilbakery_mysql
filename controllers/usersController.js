@@ -76,7 +76,7 @@ const usersController = {
                 if (err)
                     res.status(400).send({
                         message:
-                            err.message || "Some error occurred while retrieving customers."
+                            err.message || "Some error occurred while retrieving user."
                     });
                 else res.status(200).json({ message: "success", data: rows })
             });
@@ -139,7 +139,7 @@ const usersController = {
                     }
                 } else
                     (rows.length === 1) // kondisi agar data yang diupdate di menambah data baru
-                res.status(200).json({ message: "success", data: rows })
+                res.status(200).json({ message: "success updated", data: rows })
             }
             )
 

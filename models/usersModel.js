@@ -18,7 +18,7 @@ User.create = (newUser) => {
     });
 }
 
-User.getAll = result => {
+User.getAll = (result) => {
     sql.query("SELECT * FROM tb_users", (err, res) => {
         if (err) {
             console.log("error: ", err);
